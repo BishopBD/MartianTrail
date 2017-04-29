@@ -14,6 +14,11 @@ namespace MartianTrail.Controllers
             return View();
         }
 
+        public ActionResult CrewIntro()
+        {
+            return View();
+        }
+
         // GET: Setup/Details/5
         public ActionResult Details(int id)
         {
