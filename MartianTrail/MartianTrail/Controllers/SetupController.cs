@@ -55,11 +55,11 @@ namespace MartianTrail.Controllers
 
         // POST: Setup/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult ChooseRocket(FormCollection collection)
         {
             try
             {
-                // TODO: Add update logic here
+                var c= collection;
 
                 return RedirectToAction("Index");
             }
