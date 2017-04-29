@@ -1,7 +1,43 @@
 ﻿
 @{
     ViewBag.Title = "CrewIntro";
+     
 }
 
 <h2>CrewIntro</h2>
+<div style="width: 50%">
+    <table>
+        
+        <tr>
+            <td>
+                @Model.Pilot.Name
+                <br />
+                @Model.Pilot.DoB
+            </td>
+            <td>
+                <img src=@Model.Pilot.ImgPath />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Model.DeckHand1.Name
+                <br />
+                @Model.DeckHand1.DoB
+            </td>
+            <td>
+                <img src=@Model.DeckHand1.ImgPath />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Model.DeckHand2.Name
+                <br />
+                @Model.DeckHand2.DoB
+            </td>
+            <td>
+                <img src=@Model.DeckHand2.ImgPath />
+            </td>
+        </tr>
+    </table>
+</div>
 

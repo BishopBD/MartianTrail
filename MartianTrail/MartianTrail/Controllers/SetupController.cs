@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MartianTrail.Models;
+using MartianTrail.Models.Crew;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -16,7 +18,8 @@ namespace MartianTrail.Controllers
 
         public ActionResult CrewIntro()
         {
-            return View();
+            var vm = new FullCrew_VM(new CrewMember(), new CrewMember(), new CrewMember());
+            return View(vm);
         }
 
         // GET: Setup/Details/5
