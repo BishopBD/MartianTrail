@@ -9,7 +9,7 @@ namespace MartianTrail.Controllers
     public class SetupController : Controller
     {
         // GET: Setup
-        public ActionResult Index()
+        public ActionResult Rocket()
         {
             return View();
         }
