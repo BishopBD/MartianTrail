@@ -38,5 +38,20 @@
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
+    <script>
+        //function will be called on button click having id btnsave
+        $("#btnSave").click(function () {
+            $.ajax(
+                {
+                    type: "POST", //HTTP POST Method  
+                    url: "/Setup/ChooseRocket", // Controller/View   
+                    data: { //Passing data  
+                        Rocket: $("input[name=radioName]:checked", "#myForm").val()
+                    }
+
+                });
+
+        });
+    </script> 
 </body>
 </html>
