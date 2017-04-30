@@ -1,16 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Web;
 
 namespace MartianTrail.Models.Rockets
 {
-    public class SpaceXRocket : IRocket
+    public class Rocket
     {
-        public string getImage()
+        public string Name { get; set; }
+
+        public Rocket(string name)
         {
-            return null;
+            this.Name = name;
         }
     }
 }

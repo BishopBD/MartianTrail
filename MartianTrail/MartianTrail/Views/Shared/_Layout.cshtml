@@ -41,14 +41,12 @@
     <script>
         //function will be called on button click having id btnsave
         $("#btnSave").click(function () {
+            var asdf = $("#myForm").serialize()
             $.ajax(
                 {
                     type: "POST", //HTTP POST Method  
                     url: "/Setup/ChooseRocket", // Controller/View   
-                    data: { //Passing data  
-                        Rocket: $("input[name=radioName]:checked", "#myForm").val()
-                    }
-
+                    data: asdf
                 });
 
         });
