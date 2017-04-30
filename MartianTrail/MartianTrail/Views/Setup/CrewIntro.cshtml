@@ -39,5 +39,44 @@
             </td>
         </tr>
     </table>
+    <button style="margin: 0 auto; display: block" onclick="startEvents()">Onward!</button>
 </div>
 
+<script type="text/javascript">
+
+        function startEvents() {
+            data = {
+                pilot: {
+                    name: '@Model.Pilot.Name',
+                    doB: '@Model.Pilot.DoB',
+                    isDead: '@Model.Pilot.IsDead',
+                    toD: '@Model.Pilot.ToD',
+                    imgPath: '@Model.Pilot.ImgPath'
+                },
+                deckhand1: {
+                    name: '@Model.DeckHand1.Name',
+                    doB: '@Model.DeckHand1.DoB',
+                    isDead: '@Model.DeckHand1.IsDead',
+                    toD: '@Model.DeckHand1.ToD',
+                    imgPath: '@Model.DeckHand1.ImgPath'
+                },
+                deckhand2: {
+                    name: '@Model.DeckHand2.Name',
+                    doB: '@Model.DeckHand2.DoB',
+                    isDead: '@Model.DeckHand2.IsDead',
+                    toD: '@Model.DeckHand2.ToD',
+                    imgPath: '@Model.DeckHand2.ImgPath'
+                },
+                rocketType: '@Model.RocketType'
+            };
+
+            $.ajax({
+                type: 'POST',
+                dataType: "json",
+                contentType: 'application/json',
+                url: "/Events/CompleteSetup",
+                data: JSON.stringify(data),
+            });
+        }
+
+</script>

@@ -2,14 +2,13 @@
 using MartianTrail.Models.Crew;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
 namespace MartianTrail.Controllers
 {
-    public class SetupController : Controller
+    public class EventsController : Controller
     {
         // GET: Setup
         public ActionResult Rocket()
@@ -17,14 +16,17 @@ namespace MartianTrail.Controllers
             return View();
         }
 
-        public ActionResult CrewIntro()
+        //CompleteSetup
+        [HttpPost]
+        public ActionResult CompleteSetup(CompletedSetup_VM completedSetup)
         {
-            var vm = new FullCrew_VM(new CrewMember(), new CrewMember(), new CrewMember(), "testRocket!!!");
-            return View(vm);
+ 
+                return View("GeneralEvent");
+ 
         }
 
         // GET: Setup/Details/5
-        public ActionResult Details(int id)
+        public ActionResult GeneralEvent()
         {
             return View();
         }
@@ -37,7 +39,7 @@ namespace MartianTrail.Controllers
 
         // POST: Setup/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult StartEvents(FormCollection collection)
         {
             try
             {
@@ -88,21 +90,6 @@ namespace MartianTrail.Controllers
                 // TODO: Add delete logic here
 
                 return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        //CompleteSetup
-        [HttpPost]
-        public ActionResult CompleteSetup(CompletedSetup_VM completedSetup)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-                return Redirect("../Events/GeneralEvent");
             }
             catch
             {

@@ -142,11 +142,13 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\EventsController.cs" />
     <Compile Include="Controllers\SetupController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Crew\CrewMember.cs" />
+    <Compile Include="Models\Crew\CompletedSetup_VM.cs" />
     <Compile Include="Models\Crew\FullCrew_VM.cs" />
     <Compile Include="Models\Rockets\IRocket.cs" />
     <Compile Include="Models\Rockets\SpaceXRocket.cs" />
@@ -197,6 +199,7 @@
     <Content Include="Views\Setup\Rocket.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Setup\CrewIntro.cshtml" />
+    <Content Include="Views\Events\GeneralEvent.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
