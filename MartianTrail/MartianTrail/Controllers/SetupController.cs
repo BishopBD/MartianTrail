@@ -1,4 +1,4 @@
-﻿using MartianTrail.Models;
+﻿using MartianTrail.Models.Rockets;
 using MartianTrail.Models.Crew;
 using System;
 using System.Collections.Generic;
@@ -13,7 +13,8 @@ namespace MartianTrail.Controllers
         // GET: Setup
         public ActionResult Rocket()
         {
-            return View();
+            var vm = new RocketChoice_VM();
+            return View(vm);
         }
 
         public ActionResult CrewIntro()
@@ -62,7 +63,7 @@ namespace MartianTrail.Controllers
         {
             try
             {
-                var c= collection;
+                var c= collection.GetValue("rocket").AttemptedValue;
 
                 return RedirectToAction("Index");
             }

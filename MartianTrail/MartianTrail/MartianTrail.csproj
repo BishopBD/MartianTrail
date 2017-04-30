@@ -148,8 +148,8 @@
     </Compile>
     <Compile Include="Models\Crew\CrewMember.cs" />
     <Compile Include="Models\Crew\FullCrew_VM.cs" />
-    <Compile Include="Models\Rockets\IRocket.cs" />
-    <Compile Include="Models\Rockets\SpaceXRocket.cs" />
+    <Compile Include="Models\Rockets\Rocket.cs" />
+    <Compile Include="Models\Rockets\RocketChoice_VM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
