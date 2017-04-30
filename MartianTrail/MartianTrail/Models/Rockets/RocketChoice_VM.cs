@@ -7,11 +7,11 @@ namespace MartianTrail.Models.Rockets
 {
     public class RocketChoice_VM
     {
-        public List<Rocket> rockets { get; set; }
+        public List<Rocket> Rockets { get; set; }
 
         public RocketChoice_VM()
         {
-            rockets = new List<Rocket>() {
+            Rockets = new List<Rocket>() {
                 new Rocket("SpaceX"),
                 new Rocket("Blue Origin"),
                 new Rocket("NASA"),

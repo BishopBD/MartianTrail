@@ -7,10 +7,11 @@ namespace MartianTrail.Models.Rockets
 {
     public class Rocket
     {
-        public string name { get; set; }
+        public string Name { get; set; }
+
         public Rocket(string name)
         {
-            this.name = name;
+            this.Name = name;
         }
     }
 }
