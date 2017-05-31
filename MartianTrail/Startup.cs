@@ -12,14 +12,17 @@ namespace MartianTrail
 {
     public class Startup
     {
+        private IHostingEnvironment _env;
+        private IConfigurationRoot _config;
+
         public Startup(IHostingEnvironment env)
         {
+            _env = env;
             var builder = new ConfigurationBuilder()
-                .SetBasePath(env.ContentRootPath)
-                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
-                .AddEnvironmentVariables();
-            Configuration = builder.Build();
+                .SetBasePath(env.ContentRootPath);
+            //.AddJsonFile('json config file when needed')
+
+            _config = builder.Build();
         }
 
         public IConfigurationRoot Configuration { get; }
@@ -27,33 +30,41 @@ namespace MartianTrail
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton(_config);
             // Add framework services.
+            if (_env.IsEnvironment("Development"))
+            {
+                //add test services
+            }
+            else
+            {
+                //implement real services
+            }
             services.AddMvc();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-            loggerFactory.AddDebug();
+            loggerFactory.AddConsole();
 
-            if (env.IsDevelopment())
+
+            if (env.IsEnvironment("Development"))
             {
                 app.UseDeveloperExceptionPage();
-                app.UseBrowserLink();
+                //app.UseBrowserLink(); TODO: I didn't need this in the reference proj, need to determine if necessary
             }
-            else
-            {
-                app.UseExceptionHandler("/Home/Error");
-            }
+
 
             app.UseStaticFiles();
 
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    name: "Default",
+                    template: "{controller}/{action}/{id?}",
+                    defaults: new { controller = "App", action = "Index" }
+                    );
             });
         }
     }

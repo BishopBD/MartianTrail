@@ -59,21 +59,6 @@ namespace MartianTrail.Controllers
             return View();
         }
 
-        // POST: Setup/Edit/5
-        [HttpPost]
-        public ActionResult ChooseRocket(FormCollection collection)
-        {
-            try
-            {
-                var c= collection;
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
 
         // GET: Setup/Delete/5
         public ActionResult Delete(int id)
