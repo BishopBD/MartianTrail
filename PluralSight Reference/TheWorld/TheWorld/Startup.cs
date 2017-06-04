@@ -10,6 +10,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using TheWorld.Services;
 using Microsoft.Extensions.Configuration;
+using TheWorld.Models;
+using Newtonsoft.Json.Serialization;
 
 namespace TheWorld
 {
@@ -42,21 +44,43 @@ namespace TheWorld
             {
                 // Implement a real Mail Service
             }
-            services.AddMvc();
+            
+            //Entity supported function.
+            services.AddDbContext<WorldContext>();
+
+            services.AddScoped<IWorldRepository, WorldRepository>();
+
+            services.AddTransient<WorldContextSeedData>();
+
+            services.AddLogging();
+
+            services.AddMvc()
+                .AddJsonOptions(config =>
+                {
+                    //api specific, the keys of the JSON will be camel cased, supposedly easier to identify and validate.
+                    config.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, 
+            IHostingEnvironment env, 
+            ILoggerFactory loggerFactory,
+            WorldContextSeedData seeder)
         {
-            loggerFactory.AddConsole();
-
-            if (env.IsEnvironment("Development") )
+            if (env.IsEnvironment("Development"))
             {
                 app.UseDeveloperExceptionPage();
+                loggerFactory.AddDebug(LogLevel.Information);
+            }
+            else
+            {
+                loggerFactory.AddDebug(LogLevel.Information);
             }
 
             app.UseStaticFiles();
-
+            
+            //configure url pathing, and defaults
             app.UseMvc(config =>
             {
                 config.MapRoute(
@@ -65,6 +89,9 @@ namespace TheWorld
                     defaults: new { controller = "App", action = "Index" }
                     );
             });
+            
+            //ensure there is data to be used, basic wait for database to return data. 
+            seeder.EnsureSeedData().Wait();
         }
     }
 }
