@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,27 +15,44 @@ namespace TheWorld.Controllers.Api
     public class TripsController : Controller
     {
         private IWorldRepository _repository;
+        private ILogger<TripsController> _logger;
 
-        public TripsController(IWorldRepository repository)
+        public TripsController(IWorldRepository repository, ILogger<TripsController> logger)
         {
             _repository = repository;
+            _logger = logger;
         }
 
         [HttpGet("")]
         public IActionResult Get()
         {
-            return Ok(_repository.GetAllTrips());
+            try
+            {
+                var results = _repository.GetAllTrips();
+                return Ok(Mapper.Map<IEnumerable<TripViewModel>>(results));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Failed to get All Trips: {ex}");
+                return BadRequest("Bad Request");
+            }
         }
 
         [HttpPost("")]
-        public IActionResult Post([FromBody]TripViewModel theTrip)
+        public async Task<IActionResult> Post([FromBody]TripViewModel theTrip)
         {
             if (ModelState.IsValid)
             {
-                return Created($"api/trips/{theTrip.Name}", theTrip);
+                var newTrip = Mapper.Map<Trip>(theTrip);
+                _repository.AddTrip(newTrip);
+
+                if (await _repository.SaveChangesAsync())
+                {
+                    return Created($"api/trips/{theTrip.Name}", Mapper.Map<TripViewModel>(newTrip));
+                }
             }
 
-            return BadRequest("Bad Request");
+            return BadRequest("Failed to save the trip");
         }
     }
 }
