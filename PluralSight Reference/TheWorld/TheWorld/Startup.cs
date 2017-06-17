@@ -14,6 +14,7 @@ using TheWorld.Models;
 using Newtonsoft.Json.Serialization;
 using AutoMapper;
 using TheWorld.ViewModels;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace TheWorld
 {
@@ -46,13 +47,24 @@ namespace TheWorld
             {
                 // Implement a real Mail Service
             }
-            
+
             //Entity supported function.
             services.AddDbContext<WorldContext>();
 
             services.AddScoped<IWorldRepository, WorldRepository>();
 
+            services.AddTransient<GeoCoordsService>();
+
             services.AddTransient<WorldContextSeedData>();
+
+            services.AddIdentity<WorldUser, IdentityRole>(config =>
+            {
+                config.User.RequireUniqueEmail = true;
+                config.Password.RequiredLength = 8;
+                config.Cookies.ApplicationCookie.LoginPath = "/Auth/Login";
+            })
+            .AddEntityFrameworkStores<WorldContext>();
+
 
             services.AddLogging();
 
@@ -65,8 +77,8 @@ namespace TheWorld
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, 
-            IHostingEnvironment env, 
+        public void Configure(IApplicationBuilder app,
+            IHostingEnvironment env,
             ILoggerFactory loggerFactory,
             WorldContextSeedData seeder)
         {
@@ -88,7 +100,9 @@ namespace TheWorld
             }
 
             app.UseStaticFiles();
-            
+
+            app.UseIdentity();
+
             //configure url pathing, and defaults
             app.UseMvc(config =>
             {
@@ -98,7 +112,7 @@ namespace TheWorld
                     defaults: new { controller = "App", action = "Index" }
                     );
             });
-            
+
             //ensure there is data to be used, basic wait for database to return data. 
             seeder.EnsureSeedData().Wait();
         }

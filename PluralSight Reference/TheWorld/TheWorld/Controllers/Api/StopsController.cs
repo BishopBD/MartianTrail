@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TheWorld.Models;
+using TheWorld.Services;
 using TheWorld.ViewModels;
 
 namespace TheWorld.Controllers.Api
@@ -16,11 +17,15 @@ namespace TheWorld.Controllers.Api
     {
         private IWorldRepository _repository;
         private ILogger _logger;
+        private GeoCoordsService _coordsService;
 
-        public StopsController(IWorldRepository repository, ILogger<StopsController> logger)
+        public StopsController(IWorldRepository repository, 
+            ILogger<StopsController> logger,
+            GeoCoordsService coordsService)
         {
             _repository = repository;
             _logger = logger;
+            _coordsService = coordsService;
         }
         [HttpGet("")]
         public IActionResult Get(string tripName)
@@ -36,6 +41,42 @@ namespace TheWorld.Controllers.Api
                 _logger.LogError("Failed to get stops: {0}", ex);
             }
 
+            return BadRequest("Failed to get stops");
+        }
+
+        [HttpPost("")]
+        public async Task<IActionResult> Post(string tripName, [FromBody] StopViewModel vm)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var newStop = Mapper.Map<Stop>(vm);
+
+                    var result = await _coordsService.GetCoordsAsync(newStop.Name);
+                    if (!result.Success)
+                    {
+                        _logger.LogError(result.Message);
+                    }
+                    else
+                    {
+                        newStop.Latitude = result.Latitude;
+                        newStop.Longitude = result.Longitude;
+
+                        _repository.AddStop(tripName, newStop);
+
+                        if (await _repository.SaveChangesAsync())
+                        {
+                            return Created($"/api/trips/{tripName}/stops/{newStop.Name}", Mapper.Map<StopViewModel>(newStop));
+                        }
+                    }
+                }           
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogError("Failed to get stops: {0}", ex);
+            }
             return BadRequest("Failed to get stops");
         }
     }

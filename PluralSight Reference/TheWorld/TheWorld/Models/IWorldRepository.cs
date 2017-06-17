@@ -10,6 +10,6 @@ namespace TheWorld.Models
 
         void AddTrip(Trip trip);
         Task<bool> SaveChangesAsync();
-
+        void AddStop(string tripName, Stop newStop);
     }
 }
